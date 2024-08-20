@@ -1,0 +1,39 @@
+.toptitle {
+    width: 300px; 
+    margin: 0 auto;
+    
+  }
+  
+  .move-right {
+    margin-left: 300px;
+    font-size: 32px;
+  }
+  
+  .attention {
+    margin-left: 300px;
+    font-size: 32px;
+  }
+  
+  
+  .input-1 {
+    width: 300px;
+    height: 30px;
+    font-size: 32px;
+  }
+  
+  .input-2 {
+    width: 1000px;
+    height: 30px;
+    font-size: 32px;
+  }
+  
+  .input-3{
+    width: 1500px;
+    height: 100px;
+    font-size: 16px;
+  }
+  
+  .large-button{
+    height: 50px;
+    font-size: 32px;
+  }

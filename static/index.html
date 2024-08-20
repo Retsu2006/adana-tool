@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>あだ名作成ツール</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="main.js" defer></script>
+    <style>
+     
+      input[type="checkbox"] {
+        transform: scale(1.5); 
+        -webkit-transform: scale(1.5); 
+        margin-right: 10px; 
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="toptitle">
+        <h1>あだ名作成ツール  </h1>
+    </div>
+    <p class="attention"></p>
+    <p class="move-right">名前（漢字）:<input type="text" class="input-1">   *外国人の場合、漢字名は記入不要。ひらがなのみ記入してください</p>
+    <p class="move-right">名前（ひらがな）:<input type="text" class="input-1"></p>
+    <p class="move-right">好きなもの:<input type="text" class="input-2"></p>
+    <p class="move-right">あだ名の代名詞 ☆複数選択可</p>
+
+    <p class="move-right">
+      <label><input type="checkbox" name="nickname_type" value="かわいい">かわいい　</label>
+      <label><input type="checkbox" name="nickname_type" value="かっこいい">かっこいい　</label>
+      <label><input type="checkbox" name="nickname_type" value="怖い">怖い　</label>
+      <label><input type="checkbox" name="nickname_type" value="面白い">面白い　</label>
+      <label><input type="checkbox" name="nickname_type" value="明るい">明るい　</label>
+      <label><input type="checkbox" name="nickname_type" value="うるさい">うるさい　</label>
+    </p>
+
+    <p class="move-right">
+      外国人ですか：
+      <label><input type="radio" name="foreigner" value="yes">Yes</label>
+      <label><input type="radio" name="foreigner" value="no" checked>No</label>
+    </p>
+    
+    <p class="move-right">
+      作ってほしいあだ名の数：
+      <input type="number" class="input-1" min="1" value="1" max="5">
+    </p>
+
+    <p class="move-right">
+      他に参考してほしい内容：
+    </p>
+    <p class="move-right"><textarea type="text" class="input-3"></textarea>
+    </p>
+    <p class="move-right">
+      <button id="submit-button" class="large-button" type="submit">作成</button>
+    </p>
+  
+    <p class="move-right">
+      結果：
+    </p>
+    
+    </main>
+  </body>
+</html>
