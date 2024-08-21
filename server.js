@@ -21,7 +21,7 @@ Deno.serve(async (request) => {
 
   // 静的ファイルを提供する
   return serveDir(request, {
-    fsRoot: "./static/",
+    fsRoot: "./public/",
     urlRoot: "",
     enableCors: true,
   });
