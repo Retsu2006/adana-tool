@@ -1,7 +1,10 @@
 const submitButton = document.querySelector('#submit-button');
-const input = document.querySelectorAll('input');
-const textarea = document.querySelector('textarea');
-const checkboxes = document.querySelectorAll('input[name="nickname_type"]');
+const lastNameInput = document.querySelector('#last-name'); // #last-name の要素を取得
+const firstNameInput = document.querySelector('#first-name'); // #first-name の要素を取得
+const favoriteThingsInput = document.querySelector('#favorite-things'); // #favorite-things の要素を取得
+const nicknameCountInput = document.querySelector('#nickname-count'); // #nickname-count の要素を取得
+const textarea = document.querySelector('#additional-info'); // #additional-info の要素を取得
+const checkboxes = document.querySelectorAll('input[name="nickname_type"]'); // ニックネームタイプのチェックボックス
 const resultTextArea = document.querySelector('#result-text'); // 結果を表示するエリア
 
 submitButton.addEventListener('click', () => {
@@ -10,13 +13,14 @@ submitButton.addEventListener('click', () => {
                                    .map(cb => cb.value);
 
   const formData = {
-    kanjiName: input[0].value,             
-    hiraganaName: input[1].value,         
-    favoriteThings: input[2].value,        
-    nicknameTypes: selectedCheckboxes,     
-    isForeigner: document.querySelector('input[name="foreigner"]:checked').value,
-    nicknameCount: input[11].value,        
-    additionalInfo: textarea.value         
+    lastName: lastNameInput ? lastNameInput.value : '',              // 姓
+    firstName: firstNameInput ? firstNameInput.value : '',            // 名
+    favoriteThings: favoriteThingsInput ? favoriteThingsInput.value : '',  // 好きなもの
+    nicknameTypes: selectedCheckboxes,          // 選ばれたニックネームのタイプ
+    isForeigner: document.querySelector('input[name="foreigner"]:checked') ? 
+                 document.querySelector('input[name="foreigner"]:checked').value : 'No', // 外国人かどうか
+    nicknameCount: nicknameCountInput ? nicknameCountInput.value : 1,    // ニックネームの数
+    additionalInfo: textarea ? textarea.value : ''              // その他の情報
   };
 
   console.log("送信するデータ:", formData);
@@ -32,7 +36,7 @@ submitButton.addEventListener('click', () => {
         console.log("サーバーからのレスポンス:", data.result);
         
         // 結果をtextareaに表示
-        resultTextArea.value = `結果: 田中太郎`;
+        resultTextArea.value = `結果:\n${data.result}`;
       });
     } else {
       console.error("APIリクエストが失敗しました。ステータス:", response.status);
