@@ -10,7 +10,7 @@ Deno.serve(async (request) => {
       console.log("受信したデータ:", data);
 
       // 生成するニックネームの数を最大5個に制限
-      const nicknameCount = Math.min(data.nicknameCount, 5);
+      const nicknameCount = Math.min(data.nicknameCount, 10);
 
       // 指定された数のニックネームを生成
       const nicknames = [];
@@ -54,12 +54,23 @@ function generateNickname(data) {
   const options = modifiers[selectedType];
   const selectedModifier = options[Math.floor(Math.random() * options.length)];
 
-  // 修飾語を姓または名のどちらか一方にのみ付加
+  // 修飾語の配置パターンをランダムに選択
   let nickname;
-  if (Math.random() < 0.5) {
-    nickname = selectedModifier + lastName; // 姓に修飾語を付ける
-  } else {
-    nickname =selectedModifier + firstName; // 名に修飾語を付ける
+  const pattern = Math.floor(Math.random() * 4);
+
+  switch (pattern) {
+    case 0:
+      nickname = selectedModifier + lastName; // 修飾語 + 姓
+      break;
+    case 1:
+      nickname = selectedModifier + firstName; // 修飾語 + 名
+      break;
+    case 2:
+      nickname = lastName + selectedModifier; // 姓 + 修飾語
+      break;
+    case 3:
+      nickname = firstName + selectedModifier; // 名 + 修飾語
+      break;
   }
 
   // 外国人オプションの処理
