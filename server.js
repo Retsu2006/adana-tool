@@ -9,7 +9,7 @@ Deno.serve(async (request) => {
       const data = await request.json();
       console.log("受信したデータ:", data);
 
-      // 生成するニックネームの数を最大5個に制限
+      // 生成するニックネームの数を最大10個に制限
       const nicknameCount = Math.min(data.nicknameCount, 10);
 
       // 指定された数のニックネームを生成
@@ -49,6 +49,9 @@ function generateNickname(data) {
     うるさい: ["ガンガン", "バリバリ", "ドンドン", "ビリビリ", "わいわい", "わめき声", "ぴかぴか", "ガヤガヤ", "ブンブン", "ギャーギャー"]
   };
 
+  // ランダムに選ばれる日本の苗字リスト
+  const japaneseSurnames = ["佐藤", "鈴木", "高橋", "田中", "渡辺", "山本", "中村", "小林", "加藤", "吉田"];
+
   // 選択されたカテゴリーからランダムで1つの修飾語を選択
   const selectedType = nicknameTypes[Math.floor(Math.random() * nicknameTypes.length)];
   const options = modifiers[selectedType];
@@ -58,25 +61,31 @@ function generateNickname(data) {
   let nickname;
   const pattern = Math.floor(Math.random() * 4);
 
-  switch (pattern) {
-    case 0:
-      nickname = selectedModifier + lastName; // 修飾語 + 姓
-      break;
-    case 1:
-      nickname = selectedModifier + firstName; // 修飾語 + 名
-      break;
-    case 2:
-      nickname = lastName + selectedModifier; // 姓 + 修飾語
-      break;
-    case 3:
-      nickname = firstName + selectedModifier; // 名 + 修飾語
-      break;
+  let modifiedLastName = lastName;
+
+  if (isForeigner === "Yes") {
+    // 外国人の場合、日本の苗字をランダムに選択
+    modifiedLastName = japaneseSurnames[Math.floor(Math.random() * japaneseSurnames.length)];
+    nickname = modifiedLastName + firstName;
   }
 
-  // 外国人オプションの処理
-  if (isForeigner === "Yes") {
-    nickname += "外国人";
+  else{
+    switch (pattern) {
+      case 0:
+        nickname = selectedModifier + modifiedLastName; // 修飾語 + 姓
+        break;
+      case 1:
+        nickname = selectedModifier + firstName; // 修飾語 + 名
+        break;
+      case 2:
+        nickname = modifiedLastName + selectedModifier; // 姓 + 修飾語
+        break;
+      case 3:
+        nickname = firstName + selectedModifier; // 名 + 修飾語
+        break;
+    }
   }
+  
 
   return nickname;
 }
