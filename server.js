@@ -9,22 +9,20 @@ Deno.serve(async (request) => {
       const data = await request.json();
       console.log("受信したデータ:", data);
 
-      // 生成するニックネームの数を最大10個に制限
       const nicknameCount = Math.min(data.nicknameCount, 10);
 
-      const nicknames = new Set();  // Setを使用して重複を排除
-      const usedSurnames = new Set();  // Setを外で初期化して重複防止
+      const nicknames = new Set();
+      const usedSurnames = new Set();
 
       while (nicknames.size < nicknameCount) {
         const nickname = generateNickname(data, usedSurnames);
-        if (nickname) {  // 生成されたニックネームが空でない場合のみ追加
-          nicknames.add(nickname);  // Setに追加し、重複を防ぐ
+        if (nickname) {
+          nicknames.add(nickname);
         }
       }
 
-      // 重複しないニックネームを配列に変換して返す
       return new Response(JSON.stringify({
-        result: Array.from(nicknames).join('\n')  // 改行で区切ってニックネームをまとめる
+        result: Array.from(nicknames).join('\n')
       }));
     } catch (error) {
       console.error("データの処理中にエラーが発生しました:", error);
@@ -32,7 +30,6 @@ Deno.serve(async (request) => {
     }
   }
 
-  // 静的ファイルを提供する
   return serveDir(request, {
     fsRoot: "./public/",
     urlRoot: "",
@@ -40,8 +37,9 @@ Deno.serve(async (request) => {
   });
 });
 
+
 function generateNickname(data, usedSurnames) {
-  const { lastName, firstName, nicknameTypes, isForeigner } = data;
+  const { lastName, firstName, nicknameTypes, customModifier, isForeigner } = data;
 
   // 修飾語のカテゴリーごとのリストを定義
   const modifiers = {
@@ -109,33 +107,37 @@ function generateNickname(data, usedSurnames) {
     let modifiedLastName;
     do {
       modifiedLastName = japaneseSurnames[Math.floor(Math.random() * japaneseSurnames.length)];
-    } while (usedSurnames.has(modifiedLastName));  // 既に使用された苗字は避ける
-    usedSurnames.add(modifiedLastName);  // 使用済みとして登録
-    nickname = modifiedLastName + firstName
-    return nickname; // 姓 + 名
+    } while (usedSurnames.has(modifiedLastName));
+    usedSurnames.add(modifiedLastName);
+    nickname = modifiedLastName + firstName;
+    return nickname;
   }
 
-  // 選択されたカテゴリーからランダムで1つの修飾語を選択
-  const selectedType = nicknameTypes[Math.floor(Math.random() * nicknameTypes.length)];
-  const options = modifiers[selectedType];
+  // カスタム修飾語が存在する場合、それを使用
+  let options = [];
+  if (customModifier) {
+    options.push(customModifier);  // カスタム修飾語をリストに追加
+  } else {
+    const selectedType = nicknameTypes[Math.floor(Math.random() * nicknameTypes.length)];
+    options = modifiers[selectedType] || [];
+  }
+
   const selectedModifier = options[Math.floor(Math.random() * options.length)];
 
-  // 修飾語の配置パターンをランダムに選択
-  
   const pattern = Math.floor(Math.random() * 4);
 
   switch (pattern) {
     case 0:
-      nickname = selectedModifier + lastName; // 修飾語 + 姓
+      nickname = selectedModifier + lastName;
       break;
     case 1:
-      nickname = selectedModifier + firstName; // 修飾語 + 名
+      nickname = selectedModifier + firstName;
       break;
     case 2:
-      nickname = lastName + selectedModifier; // 姓 + 修飾語
+      nickname = lastName + selectedModifier;
       break;
     case 3:
-      nickname = firstName + selectedModifier; // 名 + 修飾語
+      nickname = firstName + selectedModifier;
       break;
   }
 

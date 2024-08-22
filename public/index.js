@@ -1,26 +1,48 @@
 const submitButton = document.querySelector('#submit-button');
-const lastNameInput = document.querySelector('#last-name'); // #last-name の要素を取得
-const firstNameInput = document.querySelector('#first-name'); // #first-name の要素を取得
-const favoriteThingsInput = document.querySelector('#favorite-things'); // #favorite-things の要素を取得
-const nicknameCountInput = document.querySelector('#nickname-count'); // #nickname-count の要素を取得
-const textarea = document.querySelector('#additional-info'); // #additional-info の要素を取得
-const checkboxes = document.querySelectorAll('input[name="nickname_type"]'); // ニックネームタイプのチェックボックス
-const resultTextArea = document.querySelector('#result-text'); // 結果を表示するエリア
+const lastNameInput = document.querySelector('#last-name');
+const firstNameInput = document.querySelector('#first-name');
+const nicknameCountInput = document.querySelector('#nickname-count');
+const resultTextArea = document.querySelector('#result-text');
+const customModifierInput = document.querySelector('#custom-modifier');
+const savedModifiersTextArea = document.querySelector('#saved-modifiers');
+const checkboxes = document.querySelectorAll('input[name="nickname_type"]');
+
+let savedModifiers = [];
+
+// ローカルストレージから保存された修飾語を読み込む
+function loadSavedModifiers() {
+  const saved = localStorage.getItem('customModifiers');
+  if (saved) {
+    savedModifiers = JSON.parse(saved);
+    savedModifiersTextArea.value = savedModifiers.join(', ');
+  }
+}
+
+// 保存された修飾語をローカルストレージに保存
+function saveCustomModifier(modifier) {
+  savedModifiers.push(modifier);
+  localStorage.setItem('customModifiers', JSON.stringify(savedModifiers));
+  savedModifiersTextArea.value = savedModifiers.join(', ');
+}
 
 submitButton.addEventListener('click', () => {
   const selectedCheckboxes = Array.from(checkboxes)
                                    .filter(cb => cb.checked)
                                    .map(cb => cb.value);
 
+  const customModifier = customModifierInput.value.trim();
+  if (customModifier) {
+    saveCustomModifier(customModifier);
+  }
+
   const formData = {
-    lastName: lastNameInput ? lastNameInput.value : '',              // 姓
-    firstName: firstNameInput ? firstNameInput.value : '',            // 名
-    favoriteThings: favoriteThingsInput ? favoriteThingsInput.value : '',  // 好きなもの
-    nicknameTypes: selectedCheckboxes,          // 選ばれたニックネームのタイプ
+    lastName: lastNameInput.value || '',
+    firstName: firstNameInput.value || '',
+    nicknameTypes: selectedCheckboxes,
+    customModifier: customModifier,  // カスタム修飾語を追加
     isForeigner: document.querySelector('input[name="foreigner"]:checked') ? 
-                 document.querySelector('input[name="foreigner"]:checked').value : 'No', // 外国人かどうか
-    nicknameCount: nicknameCountInput ? nicknameCountInput.value : 1,    // ニックネームの数
-    additionalInfo: textarea ? textarea.value : ''              // その他の情報
+                 document.querySelector('input[name="foreigner"]:checked').value : 'No',
+    nicknameCount: nicknameCountInput.value || 1,
   };
 
   console.log("送信するデータ:", formData);
@@ -31,11 +53,7 @@ submitButton.addEventListener('click', () => {
     body: JSON.stringify(formData),
   }).then((response) => {
     if (response.ok) {
-      console.log("APIリクエストが成功しました。");
       response.json().then((data) => {
-        console.log("サーバーからのレスポンス:", data.result);
-        
-        // 結果をtextareaに表示
         resultTextArea.value = `結果:\n${data.result}`;
       });
     } else {
@@ -45,3 +63,5 @@ submitButton.addEventListener('click', () => {
     console.error("APIリクエスト中にエラーが発生しました:", error);
   });
 });
+
+loadSavedModifiers(); // ページ読み込み時に保存された修飾語を表示
