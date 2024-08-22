@@ -34,6 +34,64 @@
             box-sizing: border-box;
             margin-top: 20px; 
         }
+        body.light {
+            background-color: #f0f0f0;
+            color: #000000;
+        }
+
+        #nickname-form-container.light {
+            background-color: #ffffff;
+        }
+
+        button.light {
+            background-color: #007BFF;
+            color: #ffffff;
+        }
+
+        /* ダークテーマ */
+        body.dark {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        #nickname-form-container.dark {
+            background-color: #444444;
+        }
+
+        button.dark {
+            background-color: #555555;
+            color: #ffffff;
+        }
+
+        /* ブルーテーマ */
+        body.blue {
+            background-color: #e0f7fa;
+            color: #004d40;
+        }
+
+        #nickname-form-container.blue {
+            background-color: #b2ebf2;
+        }
+
+        button.blue {
+            background-color: #00796b;
+            color: #ffffff;
+        }
+
+        /* レッドテーマ */
+        body.red {
+            background-color: #d7e987;
+            color: #000000;
+        }
+
+        #nickname-form-container.red {
+            background-color: #ec7c3ac5;
+        }
+
+        button.red {
+            background-color: #f54e4ed3;
+            color: #000000;
+        }
 
         form {
             display: grid;
@@ -109,6 +167,14 @@
     <div id="nickname-form-container">
         <h1>あだ名ジェネレーター</h1>
         
+        <label for="theme-select">テーマを選択:</label>
+        <select id="theme-select">
+            <option value="light">ライトテーマ</option>
+            <option value="dark">ダークテーマ</option>
+            <option value="blue">ブルーテーマ</option>
+            <option value="red">レッドテーマ</option>
+        </select>
+
         <form id="nickname-form">
             <label for="last-name">姓(lastName):</label>
             <input type="text" id="last-name" name="last-name">

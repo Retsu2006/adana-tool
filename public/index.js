@@ -9,6 +9,29 @@ const checkboxes = document.querySelectorAll('input[name="nickname_type"]');
 const bgm = document.getElementById('bgm');
 const toggleButton = document.getElementById('toggle-bgm');
 const volumeControl = document.getElementById('volume-control');
+const themeSelect = document.getElementById('theme-select');
+
+themeSelect.addEventListener('change', () => {
+    const selectedTheme = themeSelect.value;
+
+    // 古いテーマを削除
+    document.body.className = '';
+    document.getElementById('nickname-form-container').className = '';
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.className = '');
+
+    // 新しいテーマを適用
+    document.body.classList.add(selectedTheme);
+    document.getElementById('nickname-form-container').classList.add(selectedTheme);
+    buttons.forEach(button => button.classList.add(selectedTheme));
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const defaultTheme = 'light';
+  document.body.classList.add(defaultTheme);
+  document.getElementById('nickname-form-container').classList.add(defaultTheme);
+  document.querySelectorAll('button').forEach(button => button.classList.add(defaultTheme));
+});
 
 // BGMのオン/オフを切り替える
 toggleButton.addEventListener('click', () => {
