@@ -40,7 +40,7 @@ Deno.serve(async (request) => {
   });
 });
 
-function generateNickname(data) {
+function generateNickname(data, usedSurnames) {
   const { lastName, firstName, nicknameTypes, isForeigner } = data;
 
   // 修飾語のカテゴリーごとのリストを定義
