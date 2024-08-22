@@ -69,7 +69,7 @@
             margin-bottom: 20px;
         }
 
-        #result-text {
+        #result-text, #saved-modifiers {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -123,11 +123,21 @@
             <label for="nickname-count">生成するニックネームの数:</label>
             <input type="number" id="nickname-count" name="nickname-count" value="1" min="1" max="10">
 
+           
+
+            <label for="custom-modifier">カスタム修飾語:</label>
+            <input type="text" id="custom-modifier" name="custom-modifier" placeholder="例: スーパー">
+
             <button type="button" id="submit-button">ニックネームを生成</button>
         </form>
 
         <h2>生成されたニックネーム:</h2>
         <textarea id="result-text" rows="10" readonly></textarea>
+
+        
+        <h2>カスタム修飾語:</h2>
+        <button type="button" id="reset-button">カスタム修飾語を初期化</button>
+        <textarea id="saved-modifiers" rows="5" readonly></textarea>
     </div>
 
     <script src="index.js"></script>
