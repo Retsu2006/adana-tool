@@ -1,9 +1,35 @@
 import { serveDir } from "https://deno.land/std@0.223.0/http/file_server.ts";
 
+const nicknameData = {};
+
 Deno.serve(async (request) => {
-  const pathname = new URL(request.url).pathname;
+  const url = new URL(request.url);
+  const pathname = url.pathname;
   console.log(`パス: ${pathname}`);
 
+  if (request.method === "POST" && pathname === "/api/like") {
+    try {
+      const data = await request.json();
+      const nicknameId = data.id;
+
+      // いいねを保存
+      if (!nicknameData[nicknameId]) {
+        nicknameData[nicknameId] = { likes: 0 };
+      }
+      nicknameData[nicknameId].likes += 1;
+
+      return new Response(JSON.stringify({ likes: nicknameData[nicknameId].likes }), { status: 200 });
+    } catch (error) {
+      return new Response("Error", { status: 500 });
+    }
+  }
+
+  if (request.method === "GET" && pathname === "/api/like-count") {
+    const id = url.searchParams.get('id');
+    const likeCount = nicknameData[id] ? nicknameData[id].likes : 0;
+    return new Response(JSON.stringify({ likes: likeCount }), { status: 200 });
+  }
+  
   if (request.method === "POST" && pathname === "/api/hello") {
     try {
       const data = await request.json();
@@ -23,7 +49,7 @@ Deno.serve(async (request) => {
 
       return new Response(JSON.stringify({
         result: Array.from(nicknames).join('\n')
-      }));
+      }), { status: 200 });
     } catch (error) {
       console.error("データの処理中にエラーが発生しました:", error);
       return new Response("データの処理中にエラーが発生しました", { status: 500 });
@@ -36,7 +62,6 @@ Deno.serve(async (request) => {
     enableCors: true,
   });
 });
-
 
 function generateNickname(data, usedSurnames) {
   const { lastName, firstName, nicknameTypes, customModifier, isForeigner } = data;
@@ -113,10 +138,9 @@ function generateNickname(data, usedSurnames) {
     return nickname;
   }
 
-  // カスタム修飾語が存在する場合、それを使用
   let options = [];
   if (customModifier) {
-    options.push(customModifier);  // カスタム修飾語をリストに追加
+    options.push(customModifier);
   } else {
     const selectedType = nicknameTypes[Math.floor(Math.random() * nicknameTypes.length)];
     options = modifiers[selectedType] || [];

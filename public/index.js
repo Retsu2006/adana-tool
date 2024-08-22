@@ -10,6 +10,37 @@ const bgm = document.getElementById('bgm');
 const toggleButton = document.getElementById('toggle-bgm');
 const volumeControl = document.getElementById('volume-control');
 const themeSelect = document.getElementById('theme-select');
+const likeButtons = document.querySelectorAll('.like-button');
+
+document.addEventListener('DOMContentLoaded', () => {
+  likeButtons.forEach(button => {
+      const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
+      fetch(`/api/like-count?id=${nicknameId}`)
+          .then(response => response.json())
+          .then(data => {
+              const likesDisplay = button.nextElementSibling;
+              likesDisplay.textContent = `いいね: ${data.likes}`;
+          });
+  });
+});
+
+// 「いいね」ボタンを押したときにサーバーに送信して数字を増やす
+likeButtons.forEach(button => {
+  button.addEventListener('click', () => {
+      const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
+      fetch('/api/like', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: nicknameId }),
+      })
+      .then(response => response.json())
+      .then(data => {
+          // 「いいね」の数を更新
+          const likesDisplay = button.nextElementSibling;
+          likesDisplay.textContent = `いいね: ${data.likes}`;
+      });
+  });
+});
 
 themeSelect.addEventListener('change', () => {
     const selectedTheme = themeSelect.value;
