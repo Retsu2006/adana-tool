@@ -18,6 +18,23 @@ function loadSavedModifiers() {
   }
 }
 
+const resetButton = document.querySelector('#reset-button');
+
+// カスタム修飾語を初期化する処理
+resetButton.addEventListener('click', () => {
+  // ローカルストレージからカスタム修飾語を削除
+  localStorage.removeItem('customModifiers');
+  
+  // 保存された修飾語の配列を空にする
+  savedModifiers = [];
+  
+  // 画面の表示をクリアする
+  savedModifiersTextArea.value = '';
+  
+  console.log("カスタム修飾語が初期化されました。");
+});
+
+
 // 保存された修飾語をローカルストレージに保存
 function saveCustomModifier(modifier) {
   savedModifiers.push(modifier);
