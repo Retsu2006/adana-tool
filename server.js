@@ -12,7 +12,6 @@ Deno.serve(async (request) => {
       // 生成するニックネームの数を最大10個に制限
       const nicknameCount = Math.min(data.nicknameCount, 10);
 
-
       const nicknames = new Set();  // Setを使用して重複を排除
       const usedSurnames = new Set();  // Setを外で初期化して重複防止
 
@@ -26,7 +25,6 @@ Deno.serve(async (request) => {
       // 重複しないニックネームを配列に変換して返す
       return new Response(JSON.stringify({
         result: Array.from(nicknames).join('\n')  // 改行で区切ってニックネームをまとめる
-
       }));
     } catch (error) {
       console.error("データの処理中にエラーが発生しました:", error);
@@ -42,15 +40,11 @@ Deno.serve(async (request) => {
   });
 });
 
-
 function generateNickname(data, usedSurnames) {
-
-
   const { lastName, firstName, nicknameTypes, isForeigner } = data;
 
   // 修飾語のカテゴリーごとのリストを定義
   const modifiers = {
-
     かわいい: [
         "ふわふわ", "ちびこ", "にこにこ", "まるまる", "ぽんぽん", "キラキラ", "ぴょんぴょん", "もこもこ", "ぽよぽよ", "ふにゃふにゃ", 
         "かわい子", "もちもち", "ころころ", "にゃんにゃん", "ちゅんちゅん", "ぽかぽか", "ふかふか", "しゅわしゅわ", "にょろにょろ", "ぷりぷり",
@@ -121,14 +115,12 @@ function generateNickname(data, usedSurnames) {
     return nickname; // 姓 + 名
   }
 
-
   // 選択されたカテゴリーからランダムで1つの修飾語を選択
   const selectedType = nicknameTypes[Math.floor(Math.random() * nicknameTypes.length)];
   const options = modifiers[selectedType];
   const selectedModifier = options[Math.floor(Math.random() * options.length)];
 
   // 修飾語の配置パターンをランダムに選択
-
   
   const pattern = Math.floor(Math.random() * 4);
 
