@@ -5,14 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ニックネームジェネレーター</title>
     <style>
+
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+            overflow-y: auto; 
+            height: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            min-height: 130vh; 
+            box-sizing: border-box; 
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0; 
         }
 
         #nickname-form-container {
@@ -23,6 +32,7 @@
             width: 100%;
             max-width: 600px;
             box-sizing: border-box;
+            margin-top: 20px; 
         }
 
         form {
@@ -77,6 +87,22 @@
             box-sizing: border-box;
             grid-column: span 2;
         }
+
+        .bgm-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .bgm-controls button {
+            margin-right: 10px;
+        }
+
+        .bgm-controls input[type="range"] {
+            margin-left: 10px;
+        }
+
+        
     </style>
 </head>
 <body>
@@ -138,6 +164,15 @@
         <h2>カスタム修飾語:</h2>
         <button type="button" id="reset-button">カスタム修飾語を初期化</button>
         <textarea id="saved-modifiers" rows="5" readonly></textarea>
+
+        <div class="bgm-controls">
+            <button id="toggle-bgm">BGMオフ</button>
+            <label for="volume-control">音量:</label>
+            <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
+        </div>
+
+        <!-- BGMオーディオ要素 -->
+        <audio id="bgm" src="bgm.mp3" autoplay loop></audio>
     </div>
 
     <script src="index.js"></script>

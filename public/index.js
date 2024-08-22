@@ -6,6 +6,25 @@ const resultTextArea = document.querySelector('#result-text');
 const customModifierInput = document.querySelector('#custom-modifier');
 const savedModifiersTextArea = document.querySelector('#saved-modifiers');
 const checkboxes = document.querySelectorAll('input[name="nickname_type"]');
+const bgm = document.getElementById('bgm');
+const toggleButton = document.getElementById('toggle-bgm');
+const volumeControl = document.getElementById('volume-control');
+
+// BGMのオン/オフを切り替える
+toggleButton.addEventListener('click', () => {
+    if (bgm.paused) {
+        bgm.play();
+        toggleButton.textContent = 'BGMオフ';
+    } else {
+        bgm.pause();
+        toggleButton.textContent = 'BGMオン';
+    }
+});
+
+// 音量を調整する
+volumeControl.addEventListener('input', () => {
+    bgm.volume = volumeControl.value;
+});
 
 let savedModifiers = [];
 
