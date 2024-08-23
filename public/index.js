@@ -29,15 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
           });
   });
 });
-let confettiEnabled = true; // 初期状態で紙吹雪を有効にする
+let confettiEnabled = true; 
 
 document.getElementById('toggle-confetti').addEventListener('click', () => {
   confettiEnabled = !confettiEnabled; // 状態を切り替える
   const status = confettiEnabled ? 'ON' : 'OFF';
-  document.getElementById('toggle-confetti').textContent = `紙吹雪${status}`;
+  document.getElementById('toggle-confetti').textContent = `アニメーション${status}`;
 });
 
-// いいねボタンのクリックイベントで紙吹雪を表示（有効な場合のみ）
+
 likeButtons.forEach(button => {
   button.addEventListener('click', () => {
       const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
