@@ -20,6 +20,13 @@
 
 初対面の人と話す時にアイスブレイクとして簡単にあだ名を作成してくれるアプリがあればいいと思って開発した。
 
+## 起動方法
+
+```sh
+deno run --allow-net --allow-read --unstable-kv server.js
+```
+open http://0.0.0.0:8000/
+
 ## 使い方
 
 1. [あだ名ジェネレーター](https://adana-tool.deno.dev/) をクリックしてリンクにアクセスする。
