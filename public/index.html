@@ -34,6 +34,64 @@
             box-sizing: border-box;
             margin-top: 20px; 
         }
+        body.light {
+            background-color: #f0f0f0;
+            color: #000000;
+        }
+
+        #nickname-form-container.light {
+            background-color: #ffffff;
+        }
+
+        button.light {
+            background-color: #007BFF;
+            color: #ffffff;
+        }
+
+        /* ダークテーマ */
+        body.dark {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        #nickname-form-container.dark {
+            background-color: #444444;
+        }
+
+        button.dark {
+            background-color: #555555;
+            color: #ffffff;
+        }
+
+        /* ブルーテーマ */
+        body.blue {
+            background-color: #e0f7fa;
+            color: #004d40;
+        }
+
+        #nickname-form-container.blue {
+            background-color: #b2ebf2;
+        }
+
+        button.blue {
+            background-color: #00796b;
+            color: #ffffff;
+        }
+
+        /* レッドテーマ */
+        body.red {
+            background-color: #d7e987;
+            color: #000000;
+        }
+
+        #nickname-form-container.red {
+            background-color: #ec7c3ac5;
+        }
+
+        button.red {
+            background-color: #f54e4ed3;
+            color: #000000;
+        }
 
         form {
             display: grid;
@@ -102,6 +160,68 @@
             margin-left: 10px;
         }
 
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #FFCE00;
+            animation: confetti-fall linear;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #FFCE00; /* デフォルトカラー */
+            animation: confetti-fall linear;
+            will-change: transform; /* パフォーマンス向上のため */
+        }
+
+        /* ランダムな色の設定 */
+        .confetti:nth-child(odd) {
+            background-color: #FF0000; /* 赤 */
+        }
+
+        .confetti:nth-child(even) {
+            background-color: #00FF00; /* 緑 */
+        }
+
+        .confetti:nth-child(3n) {
+            background-color: #0000FF; /* 青 */
+        }
+
+        .confetti:nth-child(4n) {
+            background-color: #FFFF00; /* 黄色 */
+        }
+
+        .confetti:nth-child(5n) {
+            background-color: #FF00FF; /* ピンク */
+        }
+
+        .confetti:nth-child(6n) {
+            background-color: #00FFFF; /* シアン */
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
         
     </style>
 </head>
@@ -109,6 +229,14 @@
     <div id="nickname-form-container">
         <h1>あだ名ジェネレーター</h1>
         
+        <label for="theme-select">テーマを選択:</label>
+        <select id="theme-select">
+            <option value="light">ライトテーマ</option>
+            <option value="dark">ダークテーマ</option>
+            <option value="blue">ブルーテーマ</option>
+            <option value="red">レッドテーマ</option>
+        </select>
+
         <form id="nickname-form">
             <label for="last-name">姓(lastName):</label>
             <input type="text" id="last-name" name="last-name">
@@ -160,7 +288,7 @@
         <h2>あだ名:</h2>
         <textarea id="result-text" rows="10" readonly></textarea>
 
-        
+    　
         <h2>カスタム修飾語:</h2>
         <button type="button" id="reset-button">カスタム修飾語を初期化</button>
         <textarea id="saved-modifiers" rows="5" readonly></textarea>
@@ -170,11 +298,19 @@
             <label for="volume-control">音量:</label>
             <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
         </div>
+        <p> </p>
+        <div class="nickname-item" data-id="1">
+            <span class="nickname">　　　　　　アプリに評価をください！</span>
+            <button class="like-button">👍 いいね</button>
+            <span class="like-count">いいね:</span>
+        </div>
 
         <!-- BGMオーディオ要素 -->
         <audio id="bgm" src="bgm.mp3" autoplay loop></audio>
     </div>
 
+    <script type="module" src="animation.js"></script>
     <script src="index.js"></script>
+
 </body>
 </html>

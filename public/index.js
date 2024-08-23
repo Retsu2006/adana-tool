@@ -9,6 +9,62 @@ const checkboxes = document.querySelectorAll('input[name="nickname_type"]');
 const bgm = document.getElementById('bgm');
 const toggleButton = document.getElementById('toggle-bgm');
 const volumeControl = document.getElementById('volume-control');
+const themeSelect = document.getElementById('theme-select');
+const likeButtons = document.querySelectorAll('.like-button');
+
+document.addEventListener('DOMContentLoaded', () => {
+  likeButtons.forEach(button => {
+      const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
+      fetch(`/api/like-count?id=${nicknameId}`)
+          .then(response => response.json())
+          .then(data => {
+              const likesDisplay = button.nextElementSibling;
+              likesDisplay.textContent = `いいね: ${data.likes}`;
+          });
+  });
+});
+
+likeButtons.forEach(button => {
+  button.addEventListener('click', () => {
+      const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
+      fetch('/api/like', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: nicknameId }),
+      })
+      .then(response => response.json())
+      .then(data => {
+          const likesDisplay = button.nextElementSibling;
+          likesDisplay.textContent = `いいね: ${data.likes}`;
+
+          // 紙吹雪を表示
+          window.startConfetti();  // グローバル関数を呼び出す
+      });
+  });
+});
+
+
+themeSelect.addEventListener('change', () => {
+    const selectedTheme = themeSelect.value;
+
+    // 古いテーマを削除
+    document.body.className = '';
+    document.getElementById('nickname-form-container').className = '';
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.className = '');
+
+    // 新しいテーマを適用
+    document.body.classList.add(selectedTheme);
+    document.getElementById('nickname-form-container').classList.add(selectedTheme);
+    buttons.forEach(button => button.classList.add(selectedTheme));
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const defaultTheme = 'light';
+  document.body.classList.add(defaultTheme);
+  document.getElementById('nickname-form-container').classList.add(defaultTheme);
+  document.querySelectorAll('button').forEach(button => button.classList.add(defaultTheme));
+});
 
 // BGMのオン/オフを切り替える
 toggleButton.addEventListener('click', () => {
@@ -52,7 +108,6 @@ resetButton.addEventListener('click', () => {
   
   console.log("カスタム修飾語が初期化されました。");
 });
-
 
 // 保存された修飾語をローカルストレージに保存
 function saveCustomModifier(modifier) {
