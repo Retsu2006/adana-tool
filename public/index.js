@@ -151,6 +151,10 @@ submitButton.addEventListener('click', () => {
                                    .filter(cb => cb.checked)
                                    .map(cb => cb.value);
 
+  if (selectedCheckboxes.length == 0) {
+    alert("あだ名のタイプは、ひとつ以上選択してください");
+    return;
+  }
   const customModifier = customModifierInput.value.trim();
   if (customModifier) {
     saveCustomModifier(customModifier);
