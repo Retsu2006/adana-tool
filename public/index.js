@@ -25,7 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
           });
   });
 });
+let confettiEnabled = true; // 初期状態で紙吹雪を有効にする
 
+document.getElementById('toggle-confetti').addEventListener('click', () => {
+  confettiEnabled = !confettiEnabled; // 状態を切り替える
+  const status = confettiEnabled ? 'ON' : 'OFF';
+  document.getElementById('toggle-confetti').textContent = `紙吹雪${status}`;
+});
+
+// いいねボタンのクリックイベントで紙吹雪を表示（有効な場合のみ）
 likeButtons.forEach(button => {
   button.addEventListener('click', () => {
       const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
@@ -39,11 +47,14 @@ likeButtons.forEach(button => {
           const likesDisplay = button.nextElementSibling;
           likesDisplay.textContent = `いいね: ${data.likes}`;
 
-          
-          startConfetti();  
+          if (confettiEnabled) {
+              startConfetti();  // 紙吹雪を表示（有効な場合のみ）
+          }
       });
   });
 });
+
+
 
 
 themeSelect.addEventListener('change', () => {
@@ -158,3 +169,18 @@ submitButton.addEventListener('click', () => {
 });
 
 loadSavedModifiers(); // ページ読み込み時に保存された修飾語を表示
+
+function updateLikes() {
+  likeButtons.forEach(button => {
+    const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
+    fetch(`/api/like-count?id=${nicknameId}`)
+      .then(response => response.json())
+      .then(data => {
+        const likesDisplay = button.nextElementSibling;
+        likesDisplay.textContent = `いいね: ${data.likes}`;
+      });
+  });
+}
+
+// 3秒ごとにいいね数を更新
+setInterval(updateLikes, 3000);
