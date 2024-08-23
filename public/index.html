@@ -160,6 +160,68 @@
             margin-left: 10px;
         }
 
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #FFCE00;
+            animation: confetti-fall linear;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #FFCE00; /* デフォルトカラー */
+            animation: confetti-fall linear;
+            will-change: transform; /* パフォーマンス向上のため */
+        }
+
+        /* ランダムな色の設定 */
+        .confetti:nth-child(odd) {
+            background-color: #FF0000; /* 赤 */
+        }
+
+        .confetti:nth-child(even) {
+            background-color: #00FF00; /* 緑 */
+        }
+
+        .confetti:nth-child(3n) {
+            background-color: #0000FF; /* 青 */
+        }
+
+        .confetti:nth-child(4n) {
+            background-color: #FFFF00; /* 黄色 */
+        }
+
+        .confetti:nth-child(5n) {
+            background-color: #FF00FF; /* ピンク */
+        }
+
+        .confetti:nth-child(6n) {
+            background-color: #00FFFF; /* シアン */
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
         
     </style>
 </head>
@@ -247,6 +309,8 @@
         <audio id="bgm" src="bgm.mp3" autoplay loop></audio>
     </div>
 
+    <script type="module" src="animation.js"></script>
     <script src="index.js"></script>
+
 </body>
 </html>

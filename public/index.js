@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// 「いいね」ボタンを押したときにサーバーに送信して数字を増やす
 likeButtons.forEach(button => {
   button.addEventListener('click', () => {
       const nicknameId = button.closest('.nickname-item').getAttribute('data-id');
@@ -35,12 +34,15 @@ likeButtons.forEach(button => {
       })
       .then(response => response.json())
       .then(data => {
-          // 「いいね」の数を更新
           const likesDisplay = button.nextElementSibling;
           likesDisplay.textContent = `いいね: ${data.likes}`;
+
+          // 紙吹雪を表示
+          window.startConfetti();  // グローバル関数を呼び出す
       });
   });
 });
+
 
 themeSelect.addEventListener('change', () => {
     const selectedTheme = themeSelect.value;
@@ -106,7 +108,6 @@ resetButton.addEventListener('click', () => {
   
   console.log("カスタム修飾語が初期化されました。");
 });
-
 
 // 保存された修飾語をローカルストレージに保存
 function saveCustomModifier(modifier) {
