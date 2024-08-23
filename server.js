@@ -9,8 +9,8 @@ Deno.serve(async (request) => {
   if (request.method === "POST" && pathname === "/api/like") {
     try {
       const data = await request.json();
-      const nicknameId = data.id;
-      const key = ["likes", nicknameId];  // キーを配列形式で定義
+      const like_number = data.id;
+      const key = ["likes", like_number];  // キーを配列形式で定義
 
       // いいねをKVストアに保存
       const existingLikes = (await kvStore.get(key))?.value || 0;
