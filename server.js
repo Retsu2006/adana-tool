@@ -1,24 +1,23 @@
 import { serveDir } from "https://deno.land/std@0.223.0/http/file_server.ts";
 
-const nicknameData = {};
+const kvStore = await Deno.openKv(); 
 
 Deno.serve(async (request) => {
   const url = new URL(request.url);
   const pathname = url.pathname;
-  console.log(`パス: ${pathname}`);
 
   if (request.method === "POST" && pathname === "/api/like") {
     try {
       const data = await request.json();
-      const nicknameId = data.id;
+      const like_number = data.id;
+      const key = ["likes", like_number];  // キーを配列形式で定義
 
-      // いいねを保存
-      if (!nicknameData[nicknameId]) {
-        nicknameData[nicknameId] = { likes: 0 };
-      }
-      nicknameData[nicknameId].likes += 1;
+      // いいねをKVストアに保存
+      const existingLikes = (await kvStore.get(key))?.value || 0;
+      const newLikes = existingLikes + 1;
+      await kvStore.set(key, newLikes);
 
-      return new Response(JSON.stringify({ likes: nicknameData[nicknameId].likes }), { status: 200 });
+      return new Response(JSON.stringify({ likes: newLikes }), { status: 200 });
     } catch (error) {
       return new Response("Error", { status: 500 });
     }
@@ -26,7 +25,8 @@ Deno.serve(async (request) => {
 
   if (request.method === "GET" && pathname === "/api/like-count") {
     const id = url.searchParams.get('id');
-    const likeCount = nicknameData[id] ? nicknameData[id].likes : 0;
+    const key = ["likes", id];  // キーを配列形式で定義
+    const likeCount = (await kvStore.get(key))?.value || 0;
     return new Response(JSON.stringify({ likes: likeCount }), { status: 200 });
   }
   

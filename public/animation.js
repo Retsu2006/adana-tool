@@ -24,5 +24,5 @@ function startConfetti() {
   }, 5000);
 }
 
-// 他のスクリプトから呼び出せるようにグローバルスコープに公開
-window.startConfetti = startConfetti;
+
+export  { startConfetti }

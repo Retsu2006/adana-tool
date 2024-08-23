@@ -1,3 +1,5 @@
+import { startConfetti } from "./animation.js"
+
 const submitButton = document.querySelector('#submit-button');
 const lastNameInput = document.querySelector('#last-name');
 const firstNameInput = document.querySelector('#first-name');
@@ -37,8 +39,8 @@ likeButtons.forEach(button => {
           const likesDisplay = button.nextElementSibling;
           likesDisplay.textContent = `いいね: ${data.likes}`;
 
-          // 紙吹雪を表示
-          window.startConfetti();  // グローバル関数を呼び出す
+          
+          startConfetti();  
       });
   });
 });
