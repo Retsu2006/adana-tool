@@ -1,4 +1,7 @@
 import { startConfetti } from "./animation.js"
+import { startStarAnimation } from "./animation.js"
+import { startBubbleAnimation } from "./animation.js"
+import { startFireworkAnimation } from "./animation.js"
 
 const submitButton = document.querySelector('#submit-button');
 const lastNameInput = document.querySelector('#last-name');
@@ -13,6 +16,7 @@ const toggleButton = document.getElementById('toggle-bgm');
 const volumeControl = document.getElementById('volume-control');
 const themeSelect = document.getElementById('theme-select');
 const likeButtons = document.querySelectorAll('.like-button');
+
 
 document.addEventListener('DOMContentLoaded', () => {
   likeButtons.forEach(button => {
@@ -48,7 +52,21 @@ likeButtons.forEach(button => {
           likesDisplay.textContent = `いいね: ${data.likes}`;
 
           if (confettiEnabled) {
-              startConfetti();  // 紙吹雪を表示（有効な場合のみ）
+              const selectedTheme = themeSelect.value;
+              switch(selectedTheme) {
+                  case 'light':
+                      startConfetti();
+                      break;
+                  case 'dark':
+                      startStarAnimation();
+                      break;
+                  case 'blue':
+                      startBubbleAnimation();
+                      break;
+                  case 'red':
+                      startFireworkAnimation();
+                      break;
+              }
           }
       });
   });
@@ -59,7 +77,6 @@ likeButtons.forEach(button => {
 
 themeSelect.addEventListener('change', () => {
     const selectedTheme = themeSelect.value;
-
     // 古いテーマを削除
     document.body.className = '';
     document.getElementById('nickname-form-container').className = '';
