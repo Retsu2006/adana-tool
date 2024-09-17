@@ -141,8 +141,13 @@ function generateNickname(data, usedSurnames) {
   let options = [];
   if (customModifier) {
     options.push(customModifier);
-  } else {
+  } else  if (nicknameTypes.length > 0) {
     const selectedType = nicknameTypes[Math.floor(Math.random() * nicknameTypes.length)];
+    options = modifiers[selectedType] || [];
+  } else {
+    // あだ名タイプが何も選択されていなければすべて選択とみなす
+    const nicknameTypes2 = Object.keys(modifiers);
+    const selectedType = nicknameTypes2[Math.floor(Math.random() * nicknameTypes2.length)];
     options = modifiers[selectedType] || [];
   }
 
